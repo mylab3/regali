@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un regalo per Gabriele</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+:root{--bg:#e9e7e1;--ink:#14213d;--gold:#9c7a34;--paper:#fbfaf6;--muted:#5b6070;--line:#d9d3c3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1220}}
+:root[data-theme="dark"]{--bg:#0c1220}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);font-family:Jost,"Helvetica Neue",Arial,sans-serif;color:var(--ink);display:flex;justify-content:center;padding:28px 16px 40px}
+.card{width:100%;max-width:440px;background:var(--paper);padding:14px;box-shadow:0 18px 40px rgba(10,15,30,.28);border-radius:2px}
+.frame{border:1.5px solid var(--gold);padding:5px}
+.inner{border:.75px solid var(--gold);padding:34px 26px 30px;text-align:center}
+.top{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:19px;color:var(--muted);margin:0}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:46px;line-height:1.05;margin:6px 0 4px;letter-spacing:.01em}
+.sub{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;color:var(--gold);margin:0 0 20px;font-weight:500}
+.arch{display:block;margin:0 auto 14px;width:132px;height:auto}
+.gift{font-family:"Cormorant Garamond",Georgia,serif;font-size:21px;line-height:1.35;margin:0 0 18px}
+.gift b{font-weight:600}
+.incl{display:flex;justify-content:center;gap:18px;margin:0 0 22px;font-size:14px;font-weight:400;color:var(--muted)}
+.incl span{display:flex;align-items:center;gap:7px}
+.incl i{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);display:inline-block}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:6px 0 20px;border:0}
+.ask{font-size:14.5px;line-height:1.55;color:var(--muted);margin:0 0 20px}
+fieldset{border:0;padding:0;margin:0 0 18px;text-align:left}
+legend{font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;font-style:italic;color:var(--ink);padding:0;margin-bottom:8px}
+.row{display:grid;grid-template-columns:1.35fr 1fr;gap:12px}
+label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:3px}
+input{width:100%;font:400 16px Jost,Arial,sans-serif;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:6px 0;min-height:40px}
+input:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-bottom-color:var(--gold)}
+button{width:100%;margin-top:6px;background:var(--ink);color:#fbfaf6;font:500 15px Jost,Arial,sans-serif;letter-spacing:.04em;border:0;padding:15px 12px;cursor:pointer;border-radius:2px}
+button:hover{background:#1f3160}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.msg{font-size:13px;color:var(--gold);min-height:18px;margin:10px 0 0}
+.sign{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:19px;color:var(--muted);margin:16px 0 0}
+</style>
+</head>
+<body>
+<main class="card">
+ <div class="frame"><div class="inner">
+  <p class="top">Per Gabriele</p>
+  <h1>Buon compleanno</h1>
+  <p class="sub">Un regalo da vivere a Brera</p>
+
+  <svg class="arch" viewBox="0 0 132 150" fill="none" stroke="#9c7a34" stroke-width="1.2" aria-hidden="true">
+   <path d="M10 146V62a56 56 0 0 1 112 0v84z"/>
+   <path d="M20 146V63a46 46 0 0 1 92 0v83" stroke-width=".7"/>
+   <rect x="42" y="58" width="48" height="36" stroke-width="1.4"/>
+   <rect x="47" y="63" width="38" height="26" stroke-width=".7"/>
+   <path d="M50 85l9-10 7 7 6-5 9 8" stroke-width=".9"/>
+   <circle cx="75" cy="71" r="3" stroke-width=".9"/>
+   <path d="M66 100v6M60 106h12" stroke-width=".9"/>
+   <path d="M10 146h112" stroke-width="1.6"/>
+  </svg>
+
+  <p class="gift">Due ingressi alla <b>Pinacoteca di Brera</b>,<br>da vivere con chi vorrai portare con te.</p>
+  <div class="incl"><span><i></i>Due ingressi</span><span><i></i>Audioguida inclusa</span></div>
+
+  <hr class="rule">
+  <p class="ask">Scegli il giorno che preferisci e rimandami il biglietto compilato: al resto penso io.</p>
+
+  <fieldset>
+   <legend>La tua scelta</legend>
+   <div class="row">
+    <div><label for="d1">Data</label><input type="date" id="d1"></div>
+    <div><label for="t1">Orario</label><input type="time" id="t1"></div>
+   </div>
+  </fieldset>
+  <fieldset>
+   <legend>In alternativa</legend>
+   <div class="row">
+    <div><label for="d2">Data</label><input type="date" id="d2"></div>
+    <div><label for="t2">Orario</label><input type="time" id="t2"></div>
+   </div>
+  </fieldset>
+
+  <button type="button" id="send">Invia la scelta su WhatsApp</button>
+  <p class="msg" id="msg" role="status"></p>
+  <p class="sign">Antonio e gli zii Lina e Nino</p>
+ </div></div>
+</main>
+<script>
+(function(){
+ function fd(v){if(!v)return "";var p=v.split("-");return p[2]+"/"+p[1]+"/"+p[0];}
+ document.getElementById("send").addEventListener("click",function(){
+  var d1=fd(document.getElementById("d1").value),t1=document.getElementById("t1").value,
+      d2=fd(document.getElementById("d2").value),t2=document.getElementById("t2").value,
+      m=document.getElementById("msg");
+  if(!d1||!t1){m.textContent="Indica almeno la data e l’orario preferiti.";return;}
+  m.textContent="";
+  var txt="Grazie per il bellissimo regalo! Per la visita a Brera ho scelto:\n📅 Data: "+d1+"\n🕐 Orario: "+t1;
+  if(d2||t2){txt+="\n\nIn alternativa:\n📅 Data: "+(d2||"—")+"\n🕐 Orario: "+(t2||"—");}
+  var url="https://wa.me/?text="+encodeURIComponent(txt);
+  var a=document.createElement("a");
+  a.href=url;a.target="_blank";a.rel="noopener";
+  a.textContent="Se WhatsApp non si apre, tocca qui";
+  a.style.color="inherit";a.style.textDecoration="underline";
+  m.textContent="";m.appendChild(a);
+  a.click();
+ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lambe contro il sacco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@500;700&family=Barlow+Condensed:wght@600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: festoso, da spogliatoio, una sfida tra amici
+   IDEA: la locandina di un incontro di boxe: il festeggiato contro il suo regalo
+   PICTURE: un sacco da boxe appeso che si prende a pugni (tap) per aprire la sorpresa
+   COLOUR and TYPE: rosso ring dominante, bianco, giallo cartellone; Anton + Barlow
+   LAYOUT: una colonna da locandina, sacco al centro, contatore colpi sotto, rivelazione al centesimo colpo */
+:root{color-scheme:light dark;--bg:#c8101e;--deep:#8e0a15;--ink:#fff;--acc:#ffd400;--dark:#1a0a0c}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark;--bg:#5c0710;--deep:#3a0409}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#5c0710;--deep:#3a0409}}
+html{touch-action:manipulation}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Barlow,system-ui,sans-serif;overflow-x:clip;min-height:100vh}
+.poster{max-width:620px;margin:0 auto;padding:clamp(20px,4vw,40px) max(5vw,16px) 40px;text-align:center;position:relative}
+.rays{position:fixed;inset:0;background:repeating-conic-gradient(from 0deg at 50% 38%,transparent 0 6deg,rgba(0,0,0,.08) 6deg 12deg);pointer-events:none}
+.kick{font:800 18px/1 'Barlow Condensed',sans-serif;color:var(--acc);margin:0 0 10px;letter-spacing:.02em}
+h1{font:400 clamp(44px,12vw,84px)/.95 Anton,Impact,sans-serif;margin:0;text-transform:uppercase;text-wrap:balance}
+h1 .vs{display:block;font-size:.42em;color:var(--acc);margin:.12em 0}
+.sub{font:600 20px/1.3 'Barlow Condensed',sans-serif;margin:14px auto 0;max-width:30ch;opacity:.92}
+.ring{position:relative;height:min(58vh,440px);margin:14px auto 0;max-width:380px}
+.ring svg{width:100%;height:100%;overflow:visible}
+#bag{transform-origin:190px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#bag:focus{outline:none}
+#bagBtn{touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;position:absolute;inset:8% 22% 4%;background:none;border:0;cursor:pointer;border-radius:40px}
+#bagBtn:focus-visible{outline:3px dashed var(--acc);outline-offset:4px}
+.pow{position:absolute;font:400 44px/1 Anton,Impact,sans-serif;color:var(--acc);-webkit-text-stroke:2px var(--dark);pointer-events:none;white-space:nowrap;animation:pow .6s ease-out forwards}
+@keyframes pow{0%{transform:scale(.3) rotate(var(--r));opacity:1}60%{transform:scale(1.15) rotate(var(--r));opacity:1}100%{transform:scale(1) translateY(-30px) rotate(var(--r));opacity:0}}
+.meter{margin:10px auto 0;max-width:340px}
+.meter p{margin:0 0 8px;font:800 20px/1 'Barlow Condensed',sans-serif}
+.track{height:16px;background:var(--deep);border:2px solid #fff;border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--acc);transition:width .25s}
+.reveal{display:none;margin-top:6px;animation:in .6s cubic-bezier(.2,1.4,.4,1)}
+.reveal.on{display:block}
+@keyframes in{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.belt{background:var(--acc);color:var(--dark);border-radius:18px;padding:26px 22px;box-shadow:0 10px 0 var(--dark)}
+.belt h2{font:400 clamp(34px,9vw,52px)/1 Anton,Impact,sans-serif;margin:0 0 10px;text-transform:uppercase;text-wrap:balance}
+.belt p{margin:0 auto 10px;max-width:40ch;font-weight:500}
+.belt .sign{font:800 19px/1.2 'Barlow Condensed',sans-serif;margin-top:14px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:99px;font:800 18px/1 'Barlow Condensed',sans-serif;text-decoration:none;border:2px solid var(--dark);cursor:pointer}
+.btn.main{background:var(--dark);color:#fff}
+.btn.alt{background:transparent;color:var(--dark)}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.conf{position:fixed;top:-20px;width:10px;height:16px;pointer-events:none;animation:fall linear forwards;z-index:5}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.hidden{display:none}
+@media(prefers-reduced-motion:reduce){.pow,.reveal,.conf{animation:none}.conf{display:none}}
+</style>
+</head>
+<body>
+<div class="rays"></div>
+<main class="poster">
+  <p class="kick">Incontro dei 25 anni · un solo round</p>
+  <h1><span id="nm">Lambe</span><span class="vs">contro</span>Il sacco</h1>
+  <p class="sub" id="hint">Il tuo regalo è chiuso lì dentro. Per aprirlo devi prenderlo a pugni: tocca il sacco.</p>
+
+  <div class="ring" id="ring">
+    <svg viewBox="0 0 380 440" aria-hidden="true">
+      <defs>
+        <linearGradient id="leather" x1="0" x2="1">
+          <stop offset="0" stop-color="#14080a"/><stop offset=".35" stop-color="#3b1a1e"/><stop offset=".6" stop-color="#26100f"/><stop offset="1" stop-color="#0b0405"/>
+        </linearGradient>
+        <linearGradient id="band" x1="0" x2="1">
+          <stop offset="0" stop-color="#b38f00"/><stop offset=".4" stop-color="#ffe14d"/><stop offset="1" stop-color="#8c6f00"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="190" cy="430" rx="90" ry="10" fill="#000" opacity=".25"/>
+      <g id="bag">
+        <line x1="190" y1="0" x2="190" y2="40" stroke="#ddd" stroke-width="5" stroke-dasharray="8 4"/>
+        <line x1="190" y1="40" x2="135" y2="78" stroke="#ccc" stroke-width="3"/>
+        <line x1="190" y1="40" x2="245" y2="78" stroke="#ccc" stroke-width="3"/>
+        <circle cx="190" cy="40" r="7" fill="none" stroke="#eee" stroke-width="4"/>
+        <rect x="120" y="72" width="140" height="330" rx="44" fill="url(#leather)"/>
+        <rect x="120" y="96" width="140" height="26" fill="url(#band)"/>
+        <rect x="120" y="350" width="140" height="22" fill="url(#band)"/>
+        <rect x="136" y="90" width="12" height="290" rx="6" fill="#fff" opacity=".12"/>
+        <text x="190" y="250" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="40" fill="#ffd400" transform="rotate(-90 190 250)">REGALO</text>
+      </g>
+    </svg>
+    <button id="bagBtn" aria-label="Colpisci il sacco"></button>
+  </div>
+
+  <div class="meter" id="meter">
+    <p>Colpi: <span id="cnt">0</span> / 100</p>
+    <div class="track"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <section class="reveal" id="reveal" aria-live="polite">
+    <div class="belt">
+      <h2>Ko! Il sacco è tuo</h2>
+      <p>Buoni 25 anni, <strong id="nm2">Lambe</strong>! Il regalo di stasera è un sacco da boxe tutto per te: un avversario che incassa sempre, non risponde mai e non si lamenta se ti alleni alle 7 di mattina.</p>
+      <p>Usalo per scaricare le giornate storte, per prepararti al prossimo round della vita, o semplicemente per sentirti Rocky in salotto.</p>
+      <p class="sign">Con affetto (e un gancio destro),<br>Cata, Lalla, Marghe, Anto, Gabbo, Serbo e Roby</p>
+    </div>
+    <div class="btns">
+      <a class="btn main" href="https://share.google/OJlE4zNdHm4L8cqMs" target="_blank" rel="noopener">Guarda il tuo avversario</a>
+      <button class="btn alt" id="again" style="background:var(--acc)">Rifai il round</button>
+    </div>
+  </section>
+</main>
+<script>
+{
+  const GOAL=100;
+  const cheers={10:'Buon riscaldamento. Ne mancano 90.',25:'Un quarto fatto, il sacco inizia a sudare.',50:'Metà round! Non mollare adesso.',75:'Il sacco vacilla, ancora 25!',90:'Ultimi 10 colpi, chiudilo!'};
+  const words=['POW!','BAM!','SBAM!','PAF!','BOOM!','TUM!','WHAM!','SDENG!'];
+  const $=id=>document.getElementById(id);
+  const raw=decodeURIComponent((location.hash||'').slice(1)).replace(/[-_]+/g,' ').trim();
+  const name=raw?raw.replace(/\b\w/g,c=>c.toUpperCase()):'';
+  if(name){$('nm').textContent=name;$('nm2').textContent=name;document.title=name+' contro il sacco'}
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let hits=0,done=false;
+  const bag=$('bag');
+  function swing(){
+    if(reduce||!bag.animate)return;
+    const dir=Math.random()<.5?-1:1,a=10+Math.random()*6;
+    bag.animate([{transform:'rotate(0)'},{transform:`rotate(${dir*a}deg)`},{transform:`rotate(${-dir*a*.6}deg)`},{transform:`rotate(${dir*a*.3}deg)`},{transform:'rotate(0)'}],{duration:900,easing:'ease-out'});
+  }
+  function pow(e){
+    const r=$('ring').getBoundingClientRect(),p=document.createElement('span');
+    p.className='pow';p.textContent=words[Math.floor(Math.random()*words.length)];
+    const x=(e&&e.clientX?e.clientX-r.left:r.width/2)-50,y=(e&&e.clientY?e.clientY-r.top:r.height/2)-30;
+    p.style.left=Math.max(0,Math.min(r.width-110,x))+'px';p.style.top=Math.max(0,y)+'px';
+    p.style.setProperty('--r',(Math.random()*30-15)+'deg');
+    $('ring').appendChild(p);setTimeout(()=>p.remove(),700);
+  }
+  function confetti(){
+    if(reduce)return;
+    const cols=['#ffd400','#fff','#1a0a0c','#ff6b6b'];
+    for(let i=0;i<90;i++){
+      const c=document.createElement('i');c.className='conf';
+      c.style.left=Math.random()*100+'vw';c.style.background=cols[i%4];
+      c.style.animationDuration=(2+Math.random()*2.5)+'s';c.style.animationDelay=(Math.random()*.6)+'s';
+      document.body.appendChild(c);setTimeout(()=>c.remove(),5500);
+    }
+  }
+  function hit(e){
+    if(done)return;
+    hits++;swing();pow(e);
+    if(navigator.vibrate)try{navigator.vibrate(30)}catch(_){}
+    $('cnt').textContent=hits;$('fill').style.width=(hits/GOAL*100)+'%';
+    if(cheers[hits])$('hint').textContent=cheers[hits];
+    if(hits>=GOAL){
+      done=true;
+      setTimeout(()=>{
+        $('ring').classList.add('hidden');$('meter').classList.add('hidden');
+        $('hint').textContent='Il sacco ha incassato tutto. Ecco cosa nascondeva:';
+        $('reveal').classList.add('on');confetti();
+        $('reveal').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+      },450);
+    }
+  }
+  $('bagBtn').addEventListener('click',hit);
+  $('again').addEventListener('click',()=>{
+    hits=0;done=false;$('cnt').textContent=0;$('fill').style.width='0';
+    $('ring').classList.remove('hidden');$('meter').classList.remove('hidden');$('reveal').classList.remove('on');
+    $('hint').textContent='Il tuo regalo è chiuso lì dentro. Per aprirlo devi prenderlo a pugni: tocca il sacco.';
+    window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  });
+}
+</script>
+</body>
+</html>
